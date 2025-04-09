@@ -1,0 +1,168 @@
+/* Base Styles */
+.signup-page {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f4e9;
+    /* Warm parchment-like background */
+    font-family: 'Merriweather', serif;
+}
+
+/* Left Side - Intro */
+.intro-section {
+    flex: 1;
+    padding: 3rem;
+    background: #6b5840;
+    color: #f8f4e9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.intro-section h1 {
+    font-size: 4rem;
+    align-self: center;
+    margin-bottom: 1.5rem;
+    color: #e8d5b5;
+}
+
+.intro-section p {
+    font-size: 2rem;
+    line-height: 1.6;
+    max-width: 500px;
+    align-self: center;
+    margin-bottom: 1rem;
+}
+
+/* Right Side - Form */
+.form-section {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 11rem;
+}
+
+.signup-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(107, 88, 64, 0.15);
+    /* Olive-brown shadow */
+    padding: 2.5rem;
+    
+    width: 100%;
+    max-width: 400px;
+}
+
+.signup-card h2 {
+    color: #6b5840;
+    /* Olive-brown */
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d4c9b8;
+    /* Warm gray */
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #f8f4e9;
+    /* Parchment */
+}
+
+.form-group input:focus {
+    outline: 2px solid #a38f6e;
+    /* Warm brown */
+    border-color: transparent;
+}
+
+/* Button */
+.signup-button {
+    width: 100%;
+    padding: 12px;
+    background: #6b5840;
+    /* Olive-brown */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.signup-button:hover {
+    background: #5a4a36;
+    /* Darker olive */
+}
+
+/* Error Message */
+.error-message {
+    color: #c1666b;
+    /* Soft red */
+    margin-bottom: 1rem;
+    font-size: 14px;
+}
+
+/* Login Link */
+.login-link {
+    color: #6b5840;
+    /* Olive-brown */
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.login-link a {
+    color: #8b7862;
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+    font-size: 14px;
+}
+/* Location Status */
+.location-status {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.location-status.success {
+    background: #e6f7ee;
+    color: #2e7d32;
+}
+
+.location-status.error {
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* Disabled Button */
+button.disabled {
+    background: #cccccc !important;
+    cursor: not-allowed;
+}
+
+/* Form Error */
+.form-error {
+    color: #c62828;
+    margin: 10px 0;
+    text-align: center;
+}
