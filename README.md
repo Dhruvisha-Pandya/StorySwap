@@ -31,4 +31,4 @@ A peer-to-peer platform for book lovers to share physical books with neighbors u
 ### Installation  
 1. Clone the repo:  
    ```bash  
-   git clone https://github.com/yourusername/StorySwap.git  
+   git clone https://github.com/Dhruvisha-Pandya/StorySwap.git  
