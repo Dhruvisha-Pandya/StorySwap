@@ -1,46 +1,56 @@
-// BookGrid.jsx
 import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../../firebase/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db, auth } from '../../../firebase/firebase';
 
-export default function BookGrid({ title, category }) {
+export default function BookGrid({ title, filter = 'all' }) {
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const querySnapshot = await getDocs(collection(db, "books"));
-      const booksData = querySnapshot.docs.map(doc => ({
+      let q;
+      if (filter === 'my-books') {
+        q = query(collection(db, "books"), where("ownerId", "==", auth.currentUser?.uid));
+      } else {
+        q = collection(db, "books");
+      }
+
+      const querySnapshot = await getDocs(q);
+      setBooks(querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      }));
-      setBooks(booksData);
-      setLoading(false);
+      })));
     };
-    fetchBooks();
-  }, []);
 
-  if (loading) return <div>Loading...</div>;
+    fetchBooks();
+  }, [filter]);
 
   return (
-    <section className="book-section">
+    <div className="book-grid-section">
       <h2>{title}</h2>
       <div className="book-grid">
         {books.map(book => (
           <div key={book.id} className="book-card">
-            <img 
-              src={book.coverUrl || '/assets/book-covers/default.jpg'} 
-              alt={book.title}
-            />
-            <div className="book-info">
+            <div className="book-cover">
+              <img 
+                src={book.coverBase64} 
+                alt={`${book.title} cover`}
+                onError={(e) => {
+                  e.target.src = '/assets/default-book.jpg';
+                }}
+              />
+            </div>
+            <div className="book-details">
               <h3>{book.title}</h3>
-              <p>by {book.author}</p>
-              <p>⭐ {book.rating || 'New'}</p>
-              <button>View Details</button>
+              <p className="author">by {book.author}</p>
+              <p className="condition">{book.condition} condition</p>
+              {book.description && (
+                <p className="description">{book.description}</p>
+              )}
+              <button className="request-button">Request Swap</button>
             </div>
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

@@ -1,22 +1,3 @@
-// import { Link } from 'react-router-dom';
-
-// export default function Navbar() {
-//   return (
-//     <nav className="storyswap-nav">
-//       <div className="nav-left">
-//         <Link to="/" className="logo">StorySwap</Link>
-//         <div className="search-bar">
-//           <input type="text" placeholder="Search books or users..." />
-//         </div>
-//       </div>
-//       <div className="nav-right">
-//         <Link to="/library" className="nav-link">My Library</Link>
-//         <Link to="/profile" className="nav-link">Profile</Link>
-//       </div>
-//     </nav>
-//   );
-// }
-
 // Navbar.jsx
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

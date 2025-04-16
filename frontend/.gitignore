@@ -19,3 +19,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Firebase credentials
+frontend/src/firebase/firebase.js    # Explicitly ignore the file
+firebase-config*.js                 # Wildcard to catch any variant
+.env                                # Global .env (already covered, but reaffirmed)

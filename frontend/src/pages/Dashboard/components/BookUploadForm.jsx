@@ -1,108 +1,129 @@
-import { useState, useRef } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
-import { db, auth } from '../../../../firebase/firebase';
+// src/pages/Dashboard/components/BookUploadForm.jsx
+import { useState } from 'react';
+import '../../../static/home/BookUploadForm.css';
 
-export default function BookUploadForm() {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [coverBase64, setCoverBase64] = useState('');
-  const [preview, setPreview] = useState('');
-  const fileInputRef = useRef(null);
-  const [isUploading, setIsUploading] = useState(false);
+export default function BookUploadForm({ onClose, onAddBook }) {
+  const [formData, setFormData] = useState({
+    title: '',
+    author: '',
+    condition: 'Good',
+    genre: 'Fiction',
+    price: '',
+    cover: null,
+    previewImage: ''
+  });
 
-  // Handle image selection
-  const handleImageChange = (e) => {
+  const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (!file) return;
-
-    // Validate image (under 1MB)
-    if (file.size > 1_000_000) {
-      alert('Please select an image smaller than 1MB');
-      fileInputRef.current.value = ''; // Reset input
-      return;
+    if (file) {
+      setFormData({
+        ...formData,
+        cover: file,
+        previewImage: URL.createObjectURL(file)
+      });
     }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setCoverBase64(reader.result);
-      setPreview(reader.result);
-    };
-    reader.readAsDataURL(file);
   };
 
-  // Submit to Firestore
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsUploading(true);
-
-    try {
-      await setDoc(doc(db, 'books', Date.now().toString()), {
-        title,
-        author,
-        coverBase64,
-        owner: auth.currentUser.uid,
-        ownerUsername: auth.currentUser.displayName,
-        createdAt: new Date()
-      });
-      alert('Book listed successfully!');
-      // Reset form
-      setTitle('');
-      setAuthor('');
-      setCoverBase64('');
-      setPreview('');
-      fileInputRef.current.value = '';
-    } catch (error) {
-      console.error('Error adding book:', error);
-      alert('Failed to list book');
-    } finally {
-      setIsUploading(false);
+    if (!formData.cover) {
+      alert('Please upload a book cover');
+      return;
     }
+    onAddBook(formData);
   };
 
   return (
-    <div className="upload-form">
-      <h2>List Your Book</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Book Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Author</label>
-          <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Book Cover (Max 1MB)</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            ref={fileInputRef}
-            required
-          />
-          {preview && (
-            <div className="preview">
-              <img src={preview} alt="Cover preview" />
+    <div className="form-modal-overlay">
+      <div className="book-upload-form">
+        <button className="close-modal-button" onClick={onClose}>×</button>
+        <h2>Add New Book</h2>
+        
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Book Cover</label>
+            <div className="image-upload-container">
+              {formData.previewImage ? (
+                <img src={formData.previewImage} alt="Preview" className="image-preview" />
+              ) : (
+                <div className="image-upload-placeholder">
+                  <span>Click to upload cover</span>
+                </div>
+              )}
+              <input 
+                type="file" 
+                onChange={handleImageUpload}
+                accept="image/*"
+                className="image-upload-input"
+                required
+              />
             </div>
-          )}
-        </div>
+          </div>
 
-        <button type="submit" disabled={isUploading}>
-          {isUploading ? 'Uploading...' : 'List Book'}
-        </button>
-      </form>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Book Title"
+              value={formData.title}
+              onChange={(e) => setFormData({...formData, title: e.target.value})}
+              required
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Author"
+              value={formData.author}
+              onChange={(e) => setFormData({...formData, author: e.target.value})}
+              required
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-row">
+            <select
+              value={formData.condition}
+              onChange={(e) => setFormData({...formData, condition: e.target.value})}
+              className="form-select"
+            >
+              <option value="New">New</option>
+              <option value="Like New">Like New</option>
+              <option value="Good">Good</option>
+              <option value="Fair">Fair</option>
+              <option value="Poor">Poor</option>
+            </select>
+
+            <select
+              value={formData.genre}
+              onChange={(e) => setFormData({...formData, genre: e.target.value})}
+              className="form-select"
+            >
+              <option value="Fiction">Fiction</option>
+              <option value="Non-Fiction">Non-Fiction</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Mystery">Mystery</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <input
+              type="number"
+              placeholder="Rental Price (₹/month)"
+              value={formData.price}
+              onChange={(e) => setFormData({...formData, price: e.target.value})}
+              className="form-input"
+              min="0"
+            />
+          </div>
+
+          <div className="form-actions">
+            <button type="submit" className="submit-button">List Book</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
