@@ -12,3 +12,5 @@ pip install flask flask-cors firebase-admin python-dotenv
 pip install package-name
 
 
+#Tailwind css:
+npm install -D tailwindcss postcss autoprefixer
