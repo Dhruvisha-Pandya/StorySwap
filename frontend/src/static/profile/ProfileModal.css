@@ -1,0 +1,170 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.profile-modal {
+    background: #fffaf2;
+    padding: 25px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.pic-section {
+    margin-top: 20px;
+}
+
+.pic-wrapper {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: auto;
+}
+
+.profile-pic {
+    width: 8px;
+    height:8px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+.pic-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.placeholder-icon {
+    font-size: 80px;
+    color: #9b7b52;
+}
+
+.upload-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 6px;
+    cursor: pointer;
+    color: white;
+    transition: background 0.2s ease;
+}
+
+.upload-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.remove-btn {
+    font-size: 12px;
+    background: #ffcccc;
+    color: #b30000;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background: #ff9999;
+}
+
+.profile-icon-btn img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-left: 10px;
+}
+
+.form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form input,
+.form select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1.5px solid #c1a477;
+    background: #fff9f2;
+    font-size: 15px;
+}
+
+.save-btn {
+    background: #8b652f;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 0;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.link-btn {
+    margin-top: 12px;
+    display: block;
+    width: 100%;
+    background: #e7cfaa;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.email-reminder {
+    background: #ffe4e1;
+    color: #b22;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.request-list {
+    margin-top: 10px;
+    text-align: left;
+    background: #f9f2e7;
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

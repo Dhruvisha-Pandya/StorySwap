@@ -1,0 +1,177 @@
+.signup-page {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f4e9;
+    font-family: 'Merriweather', serif;
+}
+
+.intro-section {
+    flex: 1;
+    padding: 3rem;
+    background: #6b5840;
+    color: #f8f4e9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.intro-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.2rem;
+    color: #e8d5b5;
+}
+
+.intro-section p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+}
+
+.signup-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 25px rgba(107, 88, 64, 0.15);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.signup-card:hover {
+    transform: translateY(-3px);
+}
+
+.signup-card h2 {
+    color: #6b5840;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.4rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d4c9b8;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #f8f4e9;
+    transition: border 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border: 1.5px solid #a38f6e;
+    background-color: #fffaf1;
+}
+
+/* Password strength bar */
+.password-group {
+    position: relative;
+}
+
+.password-strength {
+    margin-top: 6px;
+    height: 8px;
+    background-color: #e5ddd0;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.password-strength .strength-bar {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.password-strength span {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    text-align: right;
+    font-weight: 500;
+}
+
+.signup-button {
+    width: 100%;
+    padding: 12px;
+    background: #6b5840;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s ease-in-out;
+}
+
+.signup-button:hover {
+    background: #5a4a36;
+    transform: translateY(-1px);
+}
+
+.signup-button.disabled {
+    background: #b8b2a8;
+    cursor: not-allowed;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+    font-size: 14px;
+    text-align: center;
+}
+
+.location-status {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.location-status.success {
+    background: #e6f7ee;
+    color: #2e7d32;
+}
+
+.location-status.error {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.login-link {
+    color: #6b5840;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.login-link a {
+    color: #8b7862;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+

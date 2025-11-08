@@ -1,0 +1,7 @@
+# Backend secrets
+backend/.env
+backend/serviceAccount.json
+backend/firebase-key.json
+
+#frontend
+frontend/src/firebase/firebase.js

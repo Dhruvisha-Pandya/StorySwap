@@ -1,0 +1,93 @@
+.requested-books-container {
+    padding: 20px;
+    background-color: #f7f8fa;
+    min-height: 100vh;
+}
+
+.requested-books-title {
+    text-align: center;
+    margin: 20px 0;
+    color: #2e3a59;
+    font-weight: 600;
+}
+
+.loading {
+    text-align: center;
+    margin: 50px 0;
+    color: #666;
+    font-style: italic;
+}
+
+.requested-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.requested-item {
+    display: flex;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.requested-item:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.requested-cover {
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.requested-info {
+    flex: 1;
+    padding: 15px 20px;
+    text-align: left;
+}
+
+.requested-title {
+    margin-bottom: 8px;
+    color: #222;
+    font-size: 1.3rem;
+}
+
+.requested-info p {
+    margin: 4px 0;
+    color: #555;
+    line-height: 1.4;
+    font-size: 0.95rem;
+}
+
+.no-requests {
+    text-align: center;
+    margin-top: 50px;
+    color: gray;
+    font-style: italic;
+}
+
+.requested-footer {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back-btn {
+    background: #2e3a59;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+    background: #1e2a48;
+}

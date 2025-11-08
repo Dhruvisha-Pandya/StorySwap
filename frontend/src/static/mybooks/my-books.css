@@ -1,0 +1,191 @@
+.my-books-page {
+    padding: 2.5rem 3rem;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;  
+}
+
+.my-books-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
+    margin-left: 50px;   
+}
+
+.my-books-header h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #4CAF50, #2e7d32, #1b5e20);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border: 3px solid #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.my-books-header h1::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    animation: rotate 10s linear infinite;
+    z-index: -1;
+    
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.add-book-button {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    margin-right: 50px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-book-button::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.3);
+    transition: width 0.3s ease;
+}
+
+.add-book-button:hover::after {
+    width: 100%;
+}
+
+.add-book-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.books-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2rem;
+    padding-left: 300px;
+    padding-right: 300px;
+}
+
+.book-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.book-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.book-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: contain; 
+    border-bottom: 2px solid #e0e0e0;
+    padding: 10px; 
+}
+
+.book-details {
+    padding: 1rem; 
+    text-align: center;
+}
+
+.book-details h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0.5rem 0;
+    text-transform: capitalize;
+}
+
+.book-author {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0.3rem 0;
+    font-style: italic;
+}
+
+.book-condition {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+}
+
+.book-condition.good {
+    background: #e6f7e6;
+    color: #2e7d32;
+    border-color: #2e7d32;
+}
+
+.book-price {
+    color: #4CAF50;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+}
+
+.empty-state {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 3rem;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border: 2px dashed #4CAF50;
+}
+
+.empty-state p {
+    font-size: 1.3rem;
+    color: #444;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state button {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.empty-state button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
