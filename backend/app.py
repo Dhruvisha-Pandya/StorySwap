@@ -13,6 +13,7 @@ import json
 
 # Firebase Initialization (using env vars on Render)
 firebase_env = os.getenv("FIREBASE_CREDENTIALS")
+BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:5000")
 
 if firebase_env:
     cred_dict = json.loads(firebase_env)
@@ -75,12 +76,12 @@ def send_request():
             <b>{book_title}</b> on StorySwap.</p>
             <p>You can contact the borrower directly to coordinate exchange.</p>
             <br>
-            <a href="http://127.0.0.1:5000/api/respond-request?action=accept&borrowerEmail={borrower_email}&bookTitle={book_title}&lenderName={lender_name}"
+            <a href="{BASE_URL}/api/respond-request?action=accept&borrowerEmail={borrower_email}&bookTitle={book_title}&lenderName={lender_name}"
    style="background:#4CAF50;color:white;padding:8px 12px;text-decoration:none;border-radius:6px;">
    Accept Request
 </a>
 &nbsp;&nbsp;
-<a href="http://127.0.0.1:5000/api/respond-request?action=decline&borrowerEmail={borrower_email}&bookTitle={book_title}&lenderName={lender_name}"
+<a href="{BASE_URL}/api/respond-request?action=decline&borrowerEmail={borrower_email}&bookTitle={book_title}&lenderName={lender_name}"
    style="background:#f44336;color:white;padding:8px 12px;text-decoration:none;border-radius:6px;">
    Decline Request
 </a>
