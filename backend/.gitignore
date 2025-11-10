@@ -6,4 +6,5 @@ __pycache__/
 .DS_Store
 
 serviceAccount.json
+serviceAccount-one-line.json
 firebase-key.json 
