@@ -22,8 +22,7 @@ export default function MyBooks() {
       const user = auth.currentUser;
       if (!user) return;
 
-      const res =
-        await fetch(`${API_BASE}/api/get-books?ownerId=${user.uid}`);
+      const res = await fetch(`${API_BASE}/api/get-books?ownerId=${user.uid}`);
 
       const data = await res.json();
 
@@ -37,8 +36,8 @@ export default function MyBooks() {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    // If auth state may not be ready immediately, you might want to listen for onAuthStateChanged
     fetchBooks();
   }, []);
 
@@ -77,14 +76,11 @@ export default function MyBooks() {
   // Update book (called by modal)
   const handleUpdateBook = async (bookId, updatedData) => {
     try {
-      const res = await fetch(
-        `${API_BASE}/api/update-book/${bookId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedData),
-        }
-      );
+      const res = await fetch(`${API_BASE}/api/update-book/${bookId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData),
+      });
 
       const data = await res.json();
       if (data.success) {
@@ -103,12 +99,9 @@ export default function MyBooks() {
   // Delete book (called by modal)
   const handleDeleteBook = async (bookId) => {
     try {
-      const res = await fetch(
-        `${API_BASE}/api/delete-book/${bookId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`${API_BASE}/api/delete-book/${bookId}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       if (data.success) {
         alert("🗑️ Book deleted successfully!");
