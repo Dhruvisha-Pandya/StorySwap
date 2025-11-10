@@ -10,6 +10,7 @@ import useAutoUpdateLocation from "../../hooks/useAutoUpdateLocation";
 
 export default function SearchResults() {
   useAutoUpdateLocation();
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,17 +101,20 @@ export default function SearchResults() {
       const borrowerDoc = await getDoc(doc(db, "users", auth.currentUser.uid));
       const borrower = borrowerDoc.data();
 
-      const response = await fetch("http://127.0.0.1:5000/api/send-request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          lenderEmail: book.owner.email,
-          lenderName: book.owner.username,
-          borrowerName: borrower.username,
-          borrowerEmail: borrower.email,
-          bookTitle: book.title,
-        }),
-      });
+      const response = await fetch(
+        `${API_BASE}/api/send-request`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            lenderEmail: book.owner.email,
+            lenderName: book.owner.username,
+            borrowerName: borrower.username,
+            borrowerEmail: borrower.email,
+            bookTitle: book.title,
+          }),
+        }
+      );
 
       const data = await response.json();
       if (data.success) {

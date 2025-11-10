@@ -10,6 +10,7 @@ import useAutoUpdateLocation from "../../hooks/useAutoUpdateLocation";
 export default function MyBooks() {
   useAutoUpdateLocation();
 
+  const API_BASE = process.env.REACT_APP_API_BASE_URL;
   const [books, setBooks] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
@@ -21,9 +22,9 @@ export default function MyBooks() {
       const user = auth.currentUser;
       if (!user) return;
 
-      const res = await fetch(
-        `http://127.0.0.1:5000/api/get-books?ownerId=${user.uid}`
-      );
+      const res =
+        await fetch(`${API_BASE}/api/get-books?ownerId=${user.uid}`);
+
       const data = await res.json();
 
       if (data.success) {
@@ -52,7 +53,7 @@ export default function MyBooks() {
 
       const payload = { ...bookData, ownerId: user.uid };
 
-      const res = await fetch("http://127.0.0.1:5000/api/add-book", {
+      const res = await fetch(`${API_BASE}/api/add-book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -77,7 +78,7 @@ export default function MyBooks() {
   const handleUpdateBook = async (bookId, updatedData) => {
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/api/update-book/${bookId}`,
+        `${API_BASE}/api/update-book/${bookId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -103,7 +104,7 @@ export default function MyBooks() {
   const handleDeleteBook = async (bookId) => {
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/api/delete-book/${bookId}`,
+        `${API_BASE}/api/delete-book/${bookId}`,
         {
           method: "DELETE",
         }
@@ -130,7 +131,9 @@ export default function MyBooks() {
           <div className="header-title-row">
             <h1>📚 My Books</h1>
             {books.length > 0 && (
-              <span className="book-count-badge">{books.length} {books.length === 1 ? 'book' : 'books'}</span>
+              <span className="book-count-badge">
+                {books.length} {books.length === 1 ? "book" : "books"}
+              </span>
             )}
           </div>
           <p className="header-subtitle">Manage your book collection</p>
@@ -174,7 +177,13 @@ export default function MyBooks() {
               <div className="book-details">
                 <div className="book-header">
                   <h3>{book.title}</h3>
-                  <span className={`availability-badge ${(book.availability || "Available").toLowerCase().replace(" ", "-")}`}>
+                  <span
+                    className={`availability-badge ${(
+                      book.availability || "Available"
+                    )
+                      .toLowerCase()
+                      .replace(" ", "-")}`}
+                  >
                     {book.availability || "Available"}
                   </span>
                 </div>
