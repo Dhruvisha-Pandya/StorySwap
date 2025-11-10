@@ -9,10 +9,24 @@ from firebase_admin import credentials, firestore
 import os
 
 # Firebase Initialization
-cred = credentials.Certificate("serviceAccount.json")
-firebase_admin.initialize_app(cred)
+import json
+
+# Firebase Initialization (using env vars on Render)
+firebase_env = os.getenv("FIREBASE_CREDENTIALS")
+
+if firebase_env:
+    cred_dict = json.loads(firebase_env)
+    cred = credentials.Certificate(cred_dict)
+    firebase_admin.initialize_app(cred)
+    print("🔥 Firebase initialized from environment variables")
+else:
+    cred = credentials.Certificate("serviceAccount.json")
+    firebase_admin.initialize_app(cred)
+    print("🔥 Firebase initialized from local serviceAccount.json")
+
 db = firestore.client()
 print("Firebase connection successful!")
+
 
 # Flask App Setup
 app = Flask(__name__)
