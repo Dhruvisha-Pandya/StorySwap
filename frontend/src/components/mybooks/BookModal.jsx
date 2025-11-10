@@ -79,16 +79,9 @@ export default function BookModal({
     return (
       <div className="form-modal-overlay" onClick={onClose}>
         <div
-          className="form-modal-container"
+          className="book-modal-container"
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            type="button"
-            className="close-modal-button"
-            onClick={onClose}
-          >
-            &times;
-          </button>
 
           <div className="modal-content">
             <div style={{ textAlign: "center" }}>
@@ -180,13 +173,6 @@ export default function BookModal({
         onClick={(e) => e.stopPropagation()}
       >
         <form className="book-upload-form" onSubmit={handleSave}>
-          <button
-            type="button"
-            className="close-modal-button"
-            onClick={onClose}
-          >
-            &times;
-          </button>
 
           <h2 className="form-title">Edit Book Details</h2>
 

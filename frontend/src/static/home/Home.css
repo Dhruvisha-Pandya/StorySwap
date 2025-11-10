@@ -1,218 +1,350 @@
 /* Home.css */
 .home-container {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7f2 0%, #fcfbf9 100%);
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.home-container > nav {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/*
+=========================================
+ THIS IS THE FIX
+=========================================
+*/
+.home-container > .hero-section {
+  margin-top: 0 !important;
+  padding-top: 2px !important; /* <<< CHANGED from 0 to 2px */
+  margin-bottom: 0;
+  padding-bottom: 0 !important;
+  flex-shrink: 0;
 }
 
 /* Hero Section */
 .hero-section {
-    position: relative;
-    margin-bottom: 3rem;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: block;
 }
 
 .slogan-container {
-    text-align: center;
-    padding: 3rem 2rem 2rem;
-    background: rgba(255, 255, 255, 0.95);
-    margin: 0 auto;
-    max-width: 1200px;
+  text-align: center;
+  padding: 3rem 2rem 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  margin: 0 auto;
+  max-width: 1200px;
 }
 
 .main-slogan {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 800;
-    color: #2e7d32;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    background: linear-gradient(135deg, #2e7d32, #4caf50);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1rem;
+  line-height: 1.2;
 }
 
 .sub-slogan {
-    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-    color: #666;
-    font-weight: 400;
-    margin-bottom: 0;
-    font-style: italic;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  color: #666;
+  font-weight: 400;
+  margin-bottom: 0;
+  font-style: italic;
 }
 
-/* Search Section */
+/* =========================================
+ THIS IS THE FIX
+=========================================
+*/
 .search-section {
-    padding: 2rem 1.5rem;
-    max-width: 800px;
-    margin: 0 auto;
+  padding: 0 2rem 4rem 2rem; /* Removed top padding */
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 4rem;
+  margin-top: -80px; /* Pulls the section up */
+  position: relative; /* Ensures it overlaps correctly */
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center;  REMOVED */
+  align-items: center;
+  /* min-height: ...;  REMOVED */
+  box-sizing: border-box;
 }
 
 .search-container {
-    background: white;
-    border-radius: 20px;
-    padding: 3rem 2rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem 3rem;
+  box-shadow: 0 10px 40px rgba(128, 128, 0, 0.15);
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .search-title {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 700;
-    color: #2d3748;
-    margin-bottom: 2rem;
-    position: relative;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #8b4513;
+  margin-bottom: 2rem;
+  position: relative;
 }
 
 .search-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: linear-gradient(90deg, #2e7d32, #4caf50);
-    margin: 0.5rem auto;
-    border-radius: 2px;
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #808000, #8b4513);
+  margin: 0.5rem auto;
+  border-radius: 2px;
 }
 
 .search-bar {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  max-width: 900px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .search-input {
-    flex: 1;
-    padding: 1rem 1.5rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
 }
 
 .search-input:focus {
-    outline: none;
-    border-color: #2e7d32;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+  outline: none;
+  border-color: #808000;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(128, 128, 0, 0.15);
 }
 
 .search-input::placeholder {
-    color: #a0aec0;
+  color: #a0aec0;
 }
 
 .search-button {
-    background: linear-gradient(135deg, #2e7d32, #4caf50);
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+  background: linear-gradient(135deg, #808000, #8b4513);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(128, 128, 0, 0.3);
+  white-space: nowrap;
 }
 
 .search-button:hover {
-    background: linear-gradient(135deg, #1b5e20, #2e7d32);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
+  background: linear-gradient(135deg, #6b6b00, #6b4513);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(128, 128, 0, 0.4);
 }
 
 .search-icon {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .search-filters {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .filter-select {
-    padding: 0.75rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 1rem;
-    background: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 150px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
 }
 
 .filter-select:focus {
-    outline: none;
-    border-color: #2e7d32;
-    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+  outline: none;
+  border-color: #808000;
+  box-shadow: 0 0 0 3px rgba(128, 128, 0, 0.15);
 }
 
 /* Fix for zoom issue and responsive design */
 html {
-    zoom: 100%;
-    font-size: 16px;
+  zoom: 100%;
+  font-size: 16px;
 }
 
 body {
-    min-width: 320px;
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .search-section {
+    padding: 0 1.5rem 3rem 1.5rem;
+    margin-bottom: 3rem;
+    /* min-height: ... REMOVED */
+    align-items: center;
+  }
+
+  .search-container {
+    padding: 2.5rem 2rem;
+    max-width: 900px;
+    width: 90%;
+  }
+
+  .search-bar {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
-    .slogan-container {
-        padding: 2rem 1rem 1.5rem;
-    }
+  .hero-section {
+    margin-bottom: 0;
+  }
 
-    .search-section {
-        padding: 1.5rem 1rem;
-    }
+  .search-section {
+    padding: 0 1rem 3rem 1rem;
+    margin-bottom: 3rem;
+    margin-top: -60px; /* Adjust overlap for mobile */
+    /* min-height: ... REMOVED */
+    align-items: center;
+  }
 
-    .search-container {
-        padding: 2rem 1.5rem;
-    }
+  .search-container {
+    padding: 2rem 1.5rem;
+    max-width: 95%;
+    width: 95%;
+  }
 
-    .search-bar {
-        flex-direction: column;
-        gap: 1rem;
-    }
+  .search-bar {
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 100%;
+  }
 
-    .search-button {
-        justify-content: center;
-    }
+  .search-button {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .search-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
-    .slogan-container {
-        padding: 1.5rem 1rem;
-    }
+  .search-section {
+    padding: 0 0.75rem 2rem 0.75rem;
+    margin-bottom: 2rem;
+    margin-top: -50px; /* Adjust overlap for small mobile */
+    /* min-height: ... REMOVED */
+    align-items: center;
+  }
 
-    .search-container {
-        padding: 1.5rem 1rem;
-        border-radius: 15px;
-    }
+  .search-container {
+    padding: 1.5rem 1rem;
+    border-radius: 15px;
+    max-width: 95%;
+    width: 95%;
+  }
 
-    .search-filters {
-        flex-direction: column;
-        align-items: center;
-    }
+  .search-title {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+  }
 
-    .filter-select {
-        width: 100%;
-        max-width: 250px;
-    }
+  .search-bar {
+    gap: 0.75rem;
+  }
 }
 
-/* Ensure proper container width */
-.home-container {
-    width: 100%;
-    overflow: hidden;
+/* Footer spacing - ensures footer stays at bottom without gaps */
+.home-container > footer {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* Dark Mode Styles */
+html[data-theme="dark"] .home-container {
+  background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+}
+
+html[data-theme="dark"] .search-container {
+  background: #1e1e1e;
+  border-color: #333;
+}
+
+html[data-theme="dark"] .search-title {
+  color: #e0e0e0;
+}
+
+html[data-theme="dark"] .search-title::after {
+  background: linear-gradient(90deg, #9a9a00, #a0522d);
+}
+
+html[data-theme="dark"] .search-input {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+html[data-theme="dark"] .search-input:focus {
+  background: #333;
+  border-color: #9a9a00;
+}
+
+html[data-theme="dark"] .search-input::placeholder {
+  color: #888;
+}
+
+/* =========================================
+ THIS IS THE TYPO FIX
+=========================================
+*/
+html[data-theme="dark"] .filter-select {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+html[data-theme="dark"] .filter-select:focus {
+  border-color: #9a9a00;
 }

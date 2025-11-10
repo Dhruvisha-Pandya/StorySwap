@@ -10,6 +10,8 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import Navbar from "../navbar/Navbar";
+import Footer from "../footer/Footer";
 import "../../static/profile/RequestedBooks.css";
 
 const RequestedBooks = () => {
@@ -97,6 +99,7 @@ const RequestedBooks = () => {
 
   return (
     <div className="requested-books-container">
+      <Navbar />
       <h2 className="requested-books-title">📚 Your Requested Books</h2>
 
       {requests.length > 0 ? (
@@ -144,6 +147,7 @@ const RequestedBooks = () => {
           </button>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

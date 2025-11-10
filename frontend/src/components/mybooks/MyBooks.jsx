@@ -4,6 +4,7 @@ import BookUploadForm from "./BookUploadForm";
 import BookModal from "./BookModal";
 import "../../static/mybooks/my-books.css";
 import Navbar from "../navbar/Navbar";
+import Footer from "../footer/Footer";
 import useAutoUpdateLocation from "../../hooks/useAutoUpdateLocation";
 
 export default function MyBooks() {
@@ -122,12 +123,20 @@ export default function MyBooks() {
   };
 
   return (
-    <div>
+    <div className="my-books-wrapper">
       <Navbar />
       <div className="my-books-header">
-        <h1>My Books</h1>
+        <div className="header-content">
+          <div className="header-title-row">
+            <h1>📚 My Books</h1>
+            {books.length > 0 && (
+              <span className="book-count-badge">{books.length} {books.length === 1 ? 'book' : 'books'}</span>
+            )}
+          </div>
+          <p className="header-subtitle">Manage your book collection</p>
+        </div>
         <button onClick={() => setShowForm(true)} className="add-book-button">
-          + Add Book
+          <span className="button-icon">+</span> Add New Book
         </button>
       </div>
 
@@ -163,16 +172,26 @@ export default function MyBooks() {
                 alt={book.title}
               />
               <div className="book-details">
-                <h3>{book.title}</h3>
-                <p className="book-author">{book.author}</p>
-                <p className="book-description">
-                  {book.description || "No description provided"}
+                <div className="book-header">
+                  <h3>{book.title}</h3>
+                  <span className={`availability-badge ${(book.availability || "Available").toLowerCase().replace(" ", "-")}`}>
+                    {book.availability || "Available"}
+                  </span>
+                </div>
+                <p className="book-author">
+                  <span className="detail-icon">✍️</span>
+                  <strong>Author:</strong> {book.author}
                 </p>
-                <span
-                  className={`book-condition ${book.condition?.toLowerCase()}`}
-                >
-                  {book.condition}
-                </span>
+                <div className="book-meta">
+                  <span className="book-meta-item">
+                    <span className="detail-icon">📚</span>
+                    {book.genre || "N/A"}
+                  </span>
+                  <span className="book-meta-item">
+                    <span className="detail-icon">📖</span>
+                    {book.condition || "N/A"}
+                  </span>
+                </div>
               </div>
             </div>
           ))
@@ -185,6 +204,7 @@ export default function MyBooks() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

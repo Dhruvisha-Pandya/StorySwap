@@ -1,22 +1,37 @@
 .search-results-page {
-    padding: 20px;
-    background-color: #f7f8fa;
     min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7f2 0%, #fcfbf9 100%);
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.search-results-page > nav {
+    margin-bottom: 0 !important;
 }
 
 .results-title {
     text-align: center;
-    margin: 20px 0;
+    margin: 2rem auto 1.5rem;
+    padding: 0 20px;
     color: #2e3a59;
     font-weight: 600;
+    max-width: 1400px;
+    width: 100%;
 }
 
 .results-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-width: 900px;
+    max-width: 1400px;
+    width: 100%;
     margin: 0 auto;
+    padding: 0 20px 2rem;
 }
 
 .result-item {
@@ -63,4 +78,104 @@
     margin-top: 50px;
     color: gray;
     font-style: italic;
+}
+
+.search-results-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 0;
+}
+
+/* Footer spacing - ensures footer stays at bottom without gaps */
+.search-results-page > footer {
+    margin-top: 0;
+    flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .results-list {
+        max-width: 95%;
+        padding: 0 20px 2rem;
+    }
+
+    .results-title {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .results-title {
+        font-size: 1.3rem;
+        margin: 1.5rem auto 1rem;
+        padding: 0 15px;
+    }
+
+    .result-item {
+        flex-direction: column;
+    }
+
+    .result-cover {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .results-list {
+        padding: 0 15px 1.5rem;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .results-title {
+        font-size: 1.1rem;
+        margin: 1rem auto 0.75rem;
+        padding: 0 10px;
+    }
+
+    .result-cover {
+        height: 200px;
+    }
+
+    .result-info {
+        padding: 12px 15px;
+    }
+
+    .results-list {
+        padding: 0 10px 1rem;
+        gap: 10px;
+    }
+}
+
+/* Dark Mode Styles */
+html[data-theme="dark"] .search-results-page {
+    background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+}
+
+html[data-theme="dark"] .results-title {
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .result-item {
+    background: #1e1e1e;
+    border: 1px solid #333;
+}
+
+html[data-theme="dark"] .result-item:hover {
+    box-shadow: 0 4px 12px rgba(154, 154, 0, 0.2);
+}
+
+html[data-theme="dark"] .result-title {
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .result-info p {
+    color: #bbb;
+}
+
+html[data-theme="dark"] .no-results {
+    color: #aaa;
 }

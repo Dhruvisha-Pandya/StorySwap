@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../../static/auth/Signup.css";
 import { auth, db, GeoPoint, serverTimestamp } from "../../firebase/firebase";
 
@@ -13,7 +13,17 @@ export default function Signup() {
   const [location, setLocation] = useState(null);
   const [locationError, setLocationError] = useState("");
   const [error, setError] = useState("");
+  const [theme, setTheme] = useState("light");
   const navigate = useNavigate();
+
+  // Apply theme to <html> tag
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   // Detect user location
   useEffect(() => {
@@ -57,7 +67,6 @@ export default function Signup() {
     }
   };
 
-  // Email validation logic
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const blacklist = [
@@ -80,7 +89,6 @@ export default function Signup() {
     e.preventDefault();
     setError("");
 
-    // Basic validation
     if (!isValidEmail(email)) {
       setError("Please enter a valid email address");
       return;
@@ -102,20 +110,17 @@ export default function Signup() {
     }
 
     try {
-      // Ensure username uniqueness
       const usernameDoc = await getDoc(doc(db, "usernames", username));
       if (usernameDoc.exists()) {
         throw new Error("Username already taken");
       }
 
-      // Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
 
-      // Create user document in Firestore
       await setDoc(doc(db, "users", userCredential.user.uid), {
         username,
         email,
@@ -123,7 +128,6 @@ export default function Signup() {
         createdAt: serverTimestamp(),
       });
 
-      // Map username → uid
       await setDoc(doc(db, "usernames", username), {
         uid: userCredential.user.uid,
       });
@@ -148,14 +152,24 @@ export default function Signup() {
 
   return (
     <div className="signup-page">
-      <div className="intro-section">
-        <h1>Welcome to StorySwap</h1>
-        <p>
-          Join our community of readers and share the joy of books near you.
-        </p>
-      </div>
+      {/* 🌗 Theme Toggle */}
+      <button
+        className="theme-toggle"
+        onClick={toggleTheme}
+        aria-label="Toggle Theme"
+      >
+        {theme === "light" ? "🌙" : "☀️"}
+      </button>
 
+      {/* Left Side - Image Section */}
+      <div className="signup-image"></div>
+
+      {/* Right Side - Signup Form */}
       <div className="form-section">
+        <Link to="/" className="back-link">
+          ← Back to Home
+        </Link>
+
         <div className="signup-card">
           <h2>Create Your Account</h2>
 
@@ -163,7 +177,7 @@ export default function Signup() {
             {location ? (
               <>📍 Location ready</>
             ) : (
-              <>⚠️ {locationError || "Detecting location..."}</>
+              <>⚠️ {locationError || "Detecting location..."} </>
             )}
           </div>
 

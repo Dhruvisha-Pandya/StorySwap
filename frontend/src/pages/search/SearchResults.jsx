@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase/firebase";
 import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
 import BookDetailModal from "./BookDetailModal";
 import "../../static/search/SearchResults.css";
 import useAutoUpdateLocation from "../../hooks/useAutoUpdateLocation";
@@ -129,9 +130,10 @@ export default function SearchResults() {
   return (
     <div className="search-results-page">
       <Navbar />
-      <h2 className="results-title">
-        Showing results for "{searchTerm || "All Books"}"
-      </h2>
+      <div className="search-results-content">
+        <h2 className="results-title">
+          Showing results for "{searchTerm || "All Books"}"
+        </h2>
 
       <div className="results-list">
         {books.length === 0 ? (
@@ -173,6 +175,8 @@ export default function SearchResults() {
           onSendRequest={handleSendRequest}
         />
       )}
+      </div>
+      <Footer />
     </div>
   );
 }

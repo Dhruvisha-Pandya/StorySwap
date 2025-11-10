@@ -12,7 +12,7 @@ import os
 cred = credentials.Certificate("serviceAccount.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-print("🔥 Firebase connection successful!")
+print("Firebase connection successful!")
 
 # Flask App Setup
 app = Flask(__name__)
@@ -29,8 +29,8 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 
 mail = Mail(app)
 
-print("🔑 Flask secret key loaded:", bool(app.config['SECRET_KEY']))
-print("📧 Mail setup complete:", bool(app.config['MAIL_USERNAME']))
+print("Flask secret key loaded:", bool(app.config['SECRET_KEY']))
+print("Mail setup complete:", bool(app.config['MAIL_USERNAME']))
 
 
 # ROUTE: Send Borrow Request

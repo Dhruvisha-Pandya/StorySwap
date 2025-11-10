@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HeroCarousel from "./HeroCarousel";
 import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
 import "../../static/home/Home.css";
 import useAutoUpdateLocation from "../../hooks/useAutoUpdateLocation";
 
@@ -23,11 +24,12 @@ navigate(`/search?${params.toString()}`);
 };
 
   return (
-    <div className="home-container"> <Navbar />
-  {/* Hero Section with Carousel */}
-  <div className="hero-section">
-    <HeroCarousel />
-  </div>
+    <div className="home-container">
+      <Navbar />
+      {/* Hero Section with Carousel */}
+      <div className="hero-section">
+        <HeroCarousel />
+      </div>
 
   {/* Search Section */}
   <section className="search-section">
@@ -70,8 +72,9 @@ navigate(`/search?${params.toString()}`);
           <option value="Poor">Poor</option>
         </select>
       </div>
-    </div>
-  </section>
+      </div>
+    </section>
+    <Footer />
 </div>
 
 );

@@ -10,7 +10,7 @@ import "../../static/profile/ProfileModal.css";
 import { FaCamera, FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const ProfileModal = ({ closeModal }) => {
+const ProfileModal = ({ onClose, setProfilePic: updateNavbarProfilePic }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
@@ -45,10 +45,15 @@ const ProfileModal = ({ closeModal }) => {
     if (!file) return;
     const reader = new FileReader();
     reader.onloadend = async () => {
-      setProfilePic(reader.result);
+      const newProfilePic = reader.result;
+      setProfilePic(newProfilePic);
       await updateDoc(doc(db, "users", user.uid), {
-        profilePic: reader.result,
+        profilePic: newProfilePic,
       });
+      // Update navbar profile pic if callback provided
+      if (updateNavbarProfilePic) {
+        updateNavbarProfilePic(newProfilePic);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -56,6 +61,10 @@ const ProfileModal = ({ closeModal }) => {
   const handleRemovePic = async () => {
     setProfilePic("");
     await updateDoc(doc(db, "users", user.uid), { profilePic: "" });
+    // Update navbar profile pic if callback provided
+    if (updateNavbarProfilePic) {
+      updateNavbarProfilePic("");
+    }
   };
 
   const handleSave = async () => {
@@ -71,7 +80,7 @@ const ProfileModal = ({ closeModal }) => {
       });
 
       alert("Profile updated successfully!");
-      closeModal();
+      onClose();
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Error updating profile. Try again.");
@@ -98,7 +107,7 @@ const ProfileModal = ({ closeModal }) => {
     <div className="modal-overlay">
       <div className="profile-modal">
         {/* Close button (X) */}
-        <button className="close-btn" onClick={closeModal}>
+        <button className="close-btn" onClick={onClose}>
           ×
         </button>
 

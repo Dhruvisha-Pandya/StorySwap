@@ -52,18 +52,17 @@ export default function BookUploadForm({ onClose, onAddBook }) {
   };
 
   return (
-    <div className="form-modal-overlay">
-      <div className="form-modal-container">
-        <form className="book-upload-form" onSubmit={handleSubmit}>
-          <button
-            type="button"
-            className="close-modal-button"
-            onClick={onClose}
-          >
-            &times;
-          </button>
+    <div className="form-modal-overlay" onClick={onClose}>
+      <form className="book-upload-form" onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
+        <button
+          type="button"
+          className="close-modal-button"
+          onClick={onClose}
+        >
+          &times;
+        </button>
 
-          <h2 className="form-title">List a New Book</h2>
+        <h2 className="form-title">List a New Book</h2>
 
           <div className="form-group">
             <label>Title *</label>
@@ -91,9 +90,10 @@ export default function BookUploadForm({ onClose, onAddBook }) {
             <label>Description</label>
             <textarea
               className="form-textarea"
-              rows="3"
+              rows="4"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter a brief description of the book..."
             />
           </div>
 
@@ -171,7 +171,6 @@ export default function BookUploadForm({ onClose, onAddBook }) {
             </button>
           </div>
         </form>
-      </div>
     </div>
   );
 }

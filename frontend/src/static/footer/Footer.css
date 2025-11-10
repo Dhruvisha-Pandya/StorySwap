@@ -1,0 +1,37 @@
+.footer {
+  background-color: #f9f9f9;
+  text-align: center;
+  padding: 1.5rem 0;
+  color: #888;
+  margin-top: 0;
+  width: 100%;
+  border-top: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 1rem 0;
+    font-size: 0.85rem;
+  }
+}
+
+/* Dark Mode Footer */
+html[data-theme="dark"] .footer {
+  background-color: #1a1a1a;
+  color: #aaa;
+  border-top: 1px solid #333;
+}
+

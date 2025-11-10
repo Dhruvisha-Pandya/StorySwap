@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth, db } from "../../firebase/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../../static/auth/Login.css";
 
 export default function Login() {
@@ -14,7 +14,25 @@ export default function Login() {
   const [error, setError] = useState("");
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [locationStatus, setLocationStatus] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Load saved preference from localStorage
+    return localStorage.getItem("theme") === "dark";
+  });
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Apply theme on load and whenever toggled
+    if (isDarkMode) {
+      document.body.classList.add("dark-mode");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark-mode");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -91,11 +109,20 @@ export default function Login() {
 
   return (
     <div className="login-container">
+      {/* Theme toggle button */}
+      <button className="theme-toggle" onClick={toggleTheme}>
+        {isDarkMode ? "☀️" : "🌙"}
+      </button>
+
       {/* Left Side - Image Section */}
       <div className="login-image"></div>
 
       {/* Right Side - Login Form */}
       <div className="login-form">
+        <Link to="/" className="back-link">
+          ← Back to Home
+        </Link>
+
         <div className="login-card">
           <h2>Welcome Back</h2>
           {error && <p className="error">{error}</p>}
@@ -162,6 +189,10 @@ export default function Login() {
               </>
             )}
           </form>
+
+          <p className="signup-link">
+            Don't have an account? <Link to="/signup">Sign up</Link>
+          </p>
         </div>
       </div>
     </div>

@@ -72,16 +72,14 @@ export default function BookDetailModal({ book, onClose, onSendRequest }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>
-          ✕
-        </button>
-
         <div className="modal-body">
-          <img
-            src={book.coverBase64}
-            alt={book.title}
-            className="modal-cover"
-          />
+          <div className="modal-image-wrapper">
+            <img
+              src={book.coverBase64}
+              alt={book.title}
+              className="modal-cover"
+            />
+          </div>
 
           <div className="modal-info">
             <h2>{book.title}</h2>
@@ -112,16 +110,16 @@ export default function BookDetailModal({ book, onClose, onSendRequest }) {
               {book.description || "No description available."}
             </p>
 
-            {/* ✅ Buttons side-by-side */}
+            {/* Small buttons side-by-side */}
             <div className="modal-actions">
               <button
-                className="request-btn"
+                className="request-btn-small"
                 onClick={handleSendRequest}
                 disabled={!isAvailable}
               >
                 {isAvailable ? "Send Request" : "Not Available"}
               </button>
-              <button className="close-btn" onClick={onClose}>
+              <button className="close-btn-small" onClick={onClose}>
                 Close
               </button>
             </div>

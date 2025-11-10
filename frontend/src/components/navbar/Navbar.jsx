@@ -4,11 +4,14 @@ import { auth, db } from "../../firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import "../../static/navbar/Navbar.css";
 import ProfileModal from "../profile/ProfileModal";
+import { useTheme } from "../../hooks/useTheme";
+
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [profilePic, setProfilePic] = useState("");
+  const [theme, toggleTheme] = useTheme();
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
@@ -52,10 +55,21 @@ export default function Navbar() {
   return (
     <nav className="storyswap-nav">
       <Link to="/" className="logo">
-        StorySwap
-      </Link>
+  <img src="/Logo.png" alt="StorySwap Logo" className="logo-image" />
+  <span>StorySwap</span>
+</Link>
 
       <div className="nav-right">
+        {/* Theme Toggle Button */}
+        <button
+          type="button"
+          className="theme-toggle-btn"
+          aria-label="Toggle theme"
+          onClick={toggleTheme}
+        >
+          {theme === "light" ? "🌙" : "☀️"}
+        </button>
+
         <Link to="/my-books" className="nav-icon">
           <span className="icon">📚</span>
           <span className="text">My Books</span>
@@ -66,11 +80,12 @@ export default function Navbar() {
           <button
             className="profile-icon-btn"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            aria-label="Profile menu"
           >
             {profilePic ? (
               <img src={profilePic} alt="Profile" className="nav-profile-pic" />
             ) : (
-              "👤"
+              <span className="profile-icon-placeholder">👤</span>
             )}
           </button>
 
