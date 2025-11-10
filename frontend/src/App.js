@@ -20,7 +20,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Initialize theme globally to ensure persistence
+  // eslint-disable-next-line no-unused-vars
   // const [theme] = useTheme();
 
   useEffect(() => {

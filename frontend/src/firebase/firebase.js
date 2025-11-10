@@ -19,5 +19,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);       // For authentication
 export const db = getFirestore(app);    // For Firestore database
+// eslint-disable-next-line no-unused-vars
 export { GeoPoint, serverTimestamp } from "firebase/firestore";  
 export const storage = getStorage(app);
