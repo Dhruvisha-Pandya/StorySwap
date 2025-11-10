@@ -2,6 +2,15 @@
 backend/.env
 backend/serviceAccount.json
 backend/firebase-key.json
+backend/routes/__pycache__/
+
 
 #frontend
 frontend/src/firebase/firebase.js
+
+
+node_modules/
+frontend/build/
+__pycache__/
+.vscode/
+.DS_Store
