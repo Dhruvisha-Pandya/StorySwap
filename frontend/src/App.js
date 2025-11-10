@@ -14,14 +14,14 @@ import Home from "./pages/home/Home";
 import MyBooks from "./components/mybooks/MyBooks";
 import SearchResults from "./pages/search/SearchResults";
 import RequestedBooks from "./components/profile/RequestedBooks";
-import { useTheme } from "./hooks/useTheme";
+// import { useTheme } from "./hooks/useTheme";
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Initialize theme globally to ensure persistence
-  const [theme] = useTheme();
+  // const [theme] = useTheme();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

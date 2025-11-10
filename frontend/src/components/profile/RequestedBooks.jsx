@@ -18,12 +18,10 @@ const RequestedBooks = () => {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
         await fetchUserRequests(currentUser.uid);
       } else {
         setLoading(false);

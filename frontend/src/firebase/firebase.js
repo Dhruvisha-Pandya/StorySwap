@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+// eslint-disable-next-line no-unused-vars
 import { getFirestore, GeoPoint, serverTimestamp } from "firebase/firestore"; 
 import { getStorage } from "firebase/storage";
 
@@ -17,7 +17,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
 export const auth = getAuth(app);       // For authentication
 export const db = getFirestore(app);    // For Firestore database
 export { GeoPoint, serverTimestamp } from "firebase/firestore";  
