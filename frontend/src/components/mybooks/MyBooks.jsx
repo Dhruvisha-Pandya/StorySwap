@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { auth } from "../../firebase/firebase";
 import BookUploadForm from "./BookUploadForm";
 import BookModal from "./BookModal";
@@ -14,16 +14,14 @@ export default function MyBooks() {
   const [books, setBooks] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
-  // const [editingBook, setEditingBook] = useState(null); // not required with modal edit, kept if reusing form
 
-  // Fetch user books from Flask backend
-  const fetchBooks = async () => {
+  // ✅ Wrapped in useCallback to stabilize reference
+  const fetchBooks = useCallback(async () => {
     try {
       const user = auth.currentUser;
       if (!user) return;
 
       const res = await fetch(`${API_BASE}/api/get-books?ownerId=${user.uid}`);
-
       const data = await res.json();
 
       if (data.success) {
@@ -34,14 +32,12 @@ export default function MyBooks() {
     } catch (error) {
       console.error("Error fetching books:", error);
     }
-  };
+  }, [API_BASE]);
 
   useEffect(() => {
     fetchBooks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchBooks]);
 
-  // Add new book
   const handleAddBook = async (bookData) => {
     try {
       const user = auth.currentUser;
@@ -51,7 +47,6 @@ export default function MyBooks() {
       }
 
       const payload = { ...bookData, ownerId: user.uid };
-
       const res = await fetch(`${API_BASE}/api/add-book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -73,7 +68,6 @@ export default function MyBooks() {
     }
   };
 
-  // Update book (called by modal)
   const handleUpdateBook = async (bookId, updatedData) => {
     try {
       const res = await fetch(`${API_BASE}/api/update-book/${bookId}`, {
@@ -96,7 +90,6 @@ export default function MyBooks() {
     }
   };
 
-  // Delete book (called by modal)
   const handleDeleteBook = async (bookId) => {
     try {
       const res = await fetch(`${API_BASE}/api/delete-book/${bookId}`, {
@@ -136,7 +129,6 @@ export default function MyBooks() {
         </button>
       </div>
 
-      {/* Upload Form (add new) */}
       {showForm && (
         <BookUploadForm
           onClose={() => setShowForm(false)}
@@ -144,7 +136,6 @@ export default function MyBooks() {
         />
       )}
 
-      {/* Book Modal (view / edit / delete) */}
       {selectedBook && (
         <BookModal
           book={selectedBook}
