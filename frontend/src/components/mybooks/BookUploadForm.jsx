@@ -7,7 +7,7 @@ export default function BookUploadForm({ onClose, onAddBook }) {
   const [description, setDescription] = useState("");
   const [genre, setGenre] = useState("Fiction");
   const [condition, setCondition] = useState("Good");
-  const [availability, setAvailability] = useState("Available"); // 🆕
+  const [availability, setAvailability] = useState("Available"); 
   const [coverBase64, setCoverBase64] = useState("");
   const [preview, setPreview] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +38,7 @@ export default function BookUploadForm({ onClose, onAddBook }) {
       description,
       genre,
       condition,
-      availability, // 🆕 include availability in payload
+      availability, 
       coverBase64,
     };
 

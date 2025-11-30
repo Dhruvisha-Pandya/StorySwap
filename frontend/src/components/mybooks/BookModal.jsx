@@ -4,15 +4,14 @@ import "../../static/mybooks/BookModal.css"
 export default function BookModal({
   book,
   onClose,
-  onUpdateBook, // function(bookId, updatedData)
-  onDeleteBook, // function(bookId)
+  onUpdateBook, 
+  onDeleteBook, 
   isOwner = false,
 }) {
   useAutoUpdateLocation();
 
   const [editing, setEditing] = useState(false);
-
-  // edit form state (initialize from book)
+  
   const [title, setTitle] = useState(book.title || "");
   const [author, setAuthor] = useState(book.author || "");
   const [description, setDescription] = useState(book.description || "");
@@ -67,14 +66,13 @@ export default function BookModal({
     if (!window.confirm("Delete this book? This cannot be undone.")) return;
     try {
       await onDeleteBook(book.id);
-      // parent will refresh and close modal
+      
     } catch (err) {
       console.error("Error deleting book:", err);
       alert("Failed to delete book.");
     }
   };
-
-  // Display mode
+  
   if (!editing) {
     return (
       <div className="form-modal-overlay" onClick={onClose}>
@@ -164,8 +162,7 @@ export default function BookModal({
       </div>
     );
   }
-
-  // Editing mode (renders the edit form UI)
+  
   return (
     <div className="form-modal-overlay" onClick={onClose}>
       <div

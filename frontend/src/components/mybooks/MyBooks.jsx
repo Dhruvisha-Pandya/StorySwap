@@ -15,7 +15,7 @@ export default function MyBooks() {
   const [showForm, setShowForm] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
 
-  // ✅ Wrapped in useCallback to stabilize reference
+  //  Wrapped in useCallback to stabilize reference
   const fetchBooks = useCallback(async () => {
     try {
       const user = auth.currentUser;
