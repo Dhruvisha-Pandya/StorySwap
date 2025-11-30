@@ -4,9 +4,11 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, firestore
-import resend
 import os
 import json
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # -------------------------------------------------------
 # 🔥 Initialize Firebase (Local OR Render ENV)
@@ -27,9 +29,23 @@ else:
 db = firestore.client()
 
 # -------------------------------------------------------
-# 🔥 Resend API init
+# 📧 Gmail SMTP Setup (FREE — No Domain Required)
 # -------------------------------------------------------
-resend.api_key = os.getenv("RESEND_API_KEY")
+SMTP_EMAIL = os.getenv("SMTP_EMAIL")         # your Gmail
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")   # Gmail App Password (NOT normal password)
+
+def send_email(to_email, subject, html_body):
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = SMTP_EMAIL
+    msg["To"] = to_email
+
+    msg.attach(MIMEText(html_body, "html"))
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(SMTP_EMAIL, SMTP_PASSWORD)
+        server.sendmail(SMTP_EMAIL, to_email, msg.as_string())
+
 
 # -------------------------------------------------------
 # Flask Setup
@@ -41,7 +57,7 @@ app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
 
 
 # -------------------------------------------------------
-# 📩 Send Borrow Request Email (Resend)
+# 📩 Send Borrow Request Email
 # -------------------------------------------------------
 @app.route('/api/send-request', methods=['POST'])
 def send_request():
@@ -79,17 +95,16 @@ def send_request():
         <p>Regards,<br><b>StorySwap Team</b></p>
         """
 
-        resend.Emails.send({
-            "from": "StorySwap <onboarding@resend.dev>",
-            "to": lender_email,
-            "subject": f"Borrow Request for {book_title}",
-            "html": email_body
-        })
+        send_email(
+            to_email=lender_email,
+            subject=f"Borrow Request for {book_title}",
+            html_body=email_body
+        )
 
         return jsonify({"success": True, "message": "Request email sent!"}), 200
 
     except Exception as e:
-        print("❌ Resend Error:", e)
+        print("❌ Email Error:", e)
         return jsonify({"success": False, "message": str(e)}), 500
 
 
@@ -108,21 +123,21 @@ def respond_request():
             return jsonify({"success": False, "message": "Missing parameters"}), 400
 
         status_text = "accepted" if action == "accept" else "declined"
+        color = "green" if action == "accept" else "red"
 
         email_body = f"""
         <h3>Hello!</h3>
         <p>Your request to borrow <b>{book_title}</b> has been 
-        <b style='color:{'green' if action == 'accept' else 'red'}'>{status_text}</b>
+        <b style='color:{color}'>{status_text}</b>
         by {lender_name}.</p>
         <p>Thank you for using StorySwap!</p>
         """
 
-        resend.Emails.send({
-            "from": "StorySwap <onboarding@resend.dev>",
-            "to": borrower_email,
-            "subject": f"Your Borrow Request Was {status_text}",
-            "html": email_body
-        })
+        send_email(
+            to_email=borrower_email,
+            subject=f"Your Borrow Request Was {status_text}",
+            html_body=email_body
+        )
 
         return """
         <script>
