@@ -16,6 +16,13 @@ from email.mime.multipart import MIMEMultipart
 firebase_env = os.getenv("FIREBASE_CREDENTIALS")
 BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:5000")
 
+# DEBUG: Print all environment variables (except passwords)
+print("🔍 DEBUG: Checking environment variables...")
+print(f"BASE_URL: {BASE_URL}")
+print(f"SMTP_EMAIL exists: {bool(os.getenv('SMTP_EMAIL'))}")
+print(f"SMTP_PASSWORD exists: {bool(os.getenv('SMTP_PASSWORD'))}")
+print(f"FIREBASE_CREDENTIALS exists: {bool(os.getenv('FIREBASE_CREDENTIALS'))}")
+
 if firebase_env:
     cred_dict = json.loads(firebase_env)
     cred = credentials.Certificate(cred_dict)
@@ -35,16 +42,49 @@ SMTP_EMAIL = os.getenv("SMTP_EMAIL")         # your Gmail
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")   # Gmail App Password (NOT normal password)
 
 def send_email(to_email, subject, html_body):
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
-    msg["From"] = SMTP_EMAIL
-    msg["To"] = to_email
+    try:
+        print(f"📧 Attempting to send email to: {to_email}")
+        print(f"📧 Using SMTP_EMAIL: {SMTP_EMAIL}")
+        print(f"📧 SMTP_PASSWORD length: {len(SMTP_PASSWORD) if SMTP_PASSWORD else 'MISSING'}")
+        print(f"📧 Subject: {subject}")
+        
+        if not SMTP_EMAIL or not SMTP_PASSWORD:
+            print("❌ CRITICAL: SMTP credentials are missing!")
+            return False
 
-    msg.attach(MIMEText(html_body, "html"))
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = SMTP_EMAIL
+        msg["To"] = to_email
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-        server.login(SMTP_EMAIL, SMTP_PASSWORD)
-        server.sendmail(SMTP_EMAIL, to_email, msg.as_string())
+        msg.attach(MIMEText(html_body, "html"))
+
+        print("🔌 Connecting to SMTP server (smtp.gmail.com:465)...")
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            print("✅ Connected to SMTP server")
+            print("🔐 Attempting login...")
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            print("✅ Logged in successfully")
+            print("📤 Sending email...")
+            server.sendmail(SMTP_EMAIL, to_email, msg.as_string())
+            print("✅ Email sent successfully!")
+            
+        return True
+    except smtplib.SMTPAuthenticationError as e:
+        print(f"❌ SMTP AUTHENTICATION FAILED: {e}")
+        print("💡 TROUBLESHOOTING: Check if:")
+        print("   - You're using an APP PASSWORD (not your regular Gmail password)")
+        print("   - 2-Factor Authentication is enabled in your Google account")
+        print("   - You generated the app password correctly")
+        return False
+    except smtplib.SMTPConnectError as e:
+        print(f"❌ SMTP CONNECTION FAILED: {e}")
+        print("💡 TROUBLESHOOTING: Check your internet connection and firewall settings")
+        return False
+    except Exception as e:
+        print(f"❌ UNEXPECTED EMAIL ERROR: {str(e)}")
+        print(f"❌ Error type: {type(e).__name__}")
+        return False
 
 
 # -------------------------------------------------------
@@ -54,6 +94,49 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
+
+
+# -------------------------------------------------------
+# 🧪 TEST ENDPOINT - USE THIS FIRST!
+# -------------------------------------------------------
+@app.route('/api/test-email', methods=['GET'])
+def test_email():
+    """TEST THIS ENDPOINT FIRST to check if emails work"""
+    try:
+        test_email = "your_personal_email@gmail.com"  # ⚠️ CHANGE THIS TO YOUR EMAIL
+        print(f"🧪 Starting email test to: {test_email}")
+        
+        success = send_email(
+            to_email=test_email,
+            subject="🚀 TEST from StorySwap - URGENT",
+            html_body="<h1>This is a CRITICAL TEST email</h1><p>If you receive this, email is working!</p>"
+        )
+        
+        if success:
+            print("🎉 TEST PASSED: Email sent successfully!")
+            return jsonify({"success": True, "message": "Test email sent! Check your inbox."})
+        else:
+            print("💥 TEST FAILED: Email sending failed")
+            return jsonify({"success": False, "message": "Failed to send test email. Check logs."})
+            
+    except Exception as e:
+        print(f"💥 TEST ERROR: {str(e)}")
+        return jsonify({"success": False, "message": str(e)}), 500
+
+
+# -------------------------------------------------------
+# 🔍 DEBUG ENDPOINT - Check environment
+# -------------------------------------------------------
+@app.route('/api/debug-env', methods=['GET'])
+def debug_env():
+    """Check if all environment variables are loaded correctly"""
+    return jsonify({
+        "SMTP_EMAIL_set": bool(SMTP_EMAIL),
+        "SMTP_PASSWORD_set": bool(SMTP_PASSWORD),
+        "BASE_URL": BASE_URL,
+        "FIREBASE_CREDENTIALS_set": bool(os.getenv("FIREBASE_CREDENTIALS")),
+        "FLASK_SECRET_KEY_set": bool(os.getenv("FLASK_SECRET_KEY"))
+    })
 
 
 # -------------------------------------------------------
@@ -68,6 +151,11 @@ def send_request():
         borrower_name = data.get("borrowerName")
         borrower_email = data.get("borrowerEmail")
         book_title = data.get("bookTitle")
+
+        print(f"📩 Received borrow request:")
+        print(f"   Lender: {lender_name} ({lender_email})")
+        print(f"   Borrower: {borrower_name} ({borrower_email})")
+        print(f"   Book: {book_title}")
 
         if not all([lender_email, borrower_email, book_title]):
             return jsonify({"success": False, "message": "Missing required fields"}), 400
@@ -95,13 +183,19 @@ def send_request():
         <p>Regards,<br><b>StorySwap Team</b></p>
         """
 
-        send_email(
+        print("📧 Attempting to send borrow request email...")
+        email_sent = send_email(
             to_email=lender_email,
             subject=f"Borrow Request for {book_title}",
             html_body=email_body
         )
 
-        return jsonify({"success": True, "message": "Request email sent!"}), 200
+        if email_sent:
+            print("✅ Borrow request email sent successfully!")
+            return jsonify({"success": True, "message": "Request email sent!"}), 200
+        else:
+            print("❌ Failed to send borrow request email")
+            return jsonify({"success": False, "message": "Failed to send email"}), 500
 
     except Exception as e:
         print("❌ Email Error:", e)
@@ -119,6 +213,12 @@ def respond_request():
         book_title = request.args.get("bookTitle")
         lender_name = request.args.get("lenderName")
 
+        print(f"🔄 Response request received:")
+        print(f"   Action: {action}")
+        print(f"   Borrower: {borrower_email}")
+        print(f"   Book: {book_title}")
+        print(f"   Lender: {lender_name}")
+
         if not all([action, borrower_email, book_title, lender_name]):
             return jsonify({"success": False, "message": "Missing parameters"}), 400
 
@@ -133,26 +233,34 @@ def respond_request():
         <p>Thank you for using StorySwap!</p>
         """
 
-        send_email(
+        print(f"📧 Attempting to send {status_text} notification...")
+        email_sent = send_email(
             to_email=borrower_email,
             subject=f"Your Borrow Request Was {status_text}",
             html_body=email_body
         )
 
-        return """
-        <script>
-            alert("Response recorded. Borrower notified.");
-            window.close();
-        </script>
-        """
+        if email_sent:
+            print(f"✅ {status_text} notification sent successfully!")
+            return """
+            <script>
+                alert("Response recorded. Borrower notified.");
+                window.close();
+            </script>
+            """
+        else:
+            return """
+            <script>
+                alert("Response recorded but failed to notify borrower.");
+                window.close();
+            </script>
+            """
 
     except Exception as e:
         return f"<script>alert('Error: {str(e)}');</script>", 500
 
+# ... (keep your existing book routes as they are - they're working fine)
 
-# -------------------------------------------------------
-# 📚 Add Book
-# -------------------------------------------------------
 @app.route('/api/add-book', methods=['POST'])
 def add_book():
     try:
@@ -175,10 +283,6 @@ def add_book():
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 
-
-# -------------------------------------------------------
-# 📚 Get Books for User
-# -------------------------------------------------------
 @app.route('/api/get-books', methods=['GET'])
 def get_books():
     try:
@@ -199,10 +303,6 @@ def get_books():
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 
-
-# -------------------------------------------------------
-# 📚 Update Book
-# -------------------------------------------------------
 @app.route('/api/update-book/<book_id>', methods=['PUT'])
 def update_book(book_id):
     try:
@@ -219,10 +319,6 @@ def update_book(book_id):
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 
-
-# -------------------------------------------------------
-# 🗑️ Delete Book
-# -------------------------------------------------------
 @app.route('/api/delete-book/<book_id>', methods=['DELETE'])
 def delete_book(book_id):
     try:
@@ -236,7 +332,6 @@ def delete_book(book_id):
 
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
-
 
 # -------------------------------------------------------
 # Serve React build (Production)
