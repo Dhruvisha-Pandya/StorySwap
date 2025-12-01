@@ -11,39 +11,43 @@ import {
 import "../../static/search/BookDetailModal.css";
 import useAutoUpdateLocation from "../../hooks/useAutoUpdateLocation";
 
+const AVAILABLE = "Available";
+
 export default function BookDetailModal({ book, onClose, onSendRequest }) {
   useAutoUpdateLocation();
 
   if (!book) return null;
 
-  // Enhanced send request handler
+  // Main send request handler (logic unchanged)
   const handleSendRequest = async () => {
     try {
       const borrower = auth.currentUser;
+
       if (!borrower) {
         alert("Please log in to send a request.");
         return;
       }
 
-      // ✅ Check if book is available before sending request
-      if (book.availability !== "Available") {
+      // Check availability
+      if (book.availability !== AVAILABLE) {
         alert("This book is not available for borrowing.");
         return;
       }
 
-      // ✅ Prevent duplicate requests for same book
-      const q = query(
+      // Prevent duplicate requests
+      const requestQuery = query(
         collection(db, "borrowRequests"),
         where("borrowerId", "==", borrower.uid),
         where("bookId", "==", book.id)
       );
-      const existing = await getDocs(q);
+
+      const existing = await getDocs(requestQuery);
       if (!existing.empty) {
         alert("You've already sent a request for this book.");
         return;
       }
 
-      // ✅ Save only minimal required data in Firestore
+      // Save request
       await addDoc(collection(db, "borrowRequests"), {
         bookId: book.id,
         bookImage: book.coverBase64 || "",
@@ -53,7 +57,7 @@ export default function BookDetailModal({ book, onClose, onSendRequest }) {
         timestamp: serverTimestamp(),
       });
 
-      // ✅ Continue sending the email (Flask API) - this handles the email part
+      // Trigger email sending via backend
       await onSendRequest(book);
 
       alert("✅ Request sent successfully!");
@@ -64,8 +68,8 @@ export default function BookDetailModal({ book, onClose, onSendRequest }) {
     }
   };
 
-  // Determine availability status and styling
-  const isAvailable = book.availability === "Available";
+  // Availability formatting (unchanged logic)
+  const isAvailable = book.availability === AVAILABLE;
   const availabilityClass = isAvailable ? "available" : "not-available";
   const availabilityText = book.availability || "Unknown";
 
@@ -75,14 +79,15 @@ export default function BookDetailModal({ book, onClose, onSendRequest }) {
         <div className="modal-body">
           <div className="modal-image-wrapper">
             <img
-              src={book.coverBase64}
-              alt={book.title}
+              src={book.coverBase64 || ""}
+              alt={book.title || "Book Cover"}
               className="modal-cover"
             />
           </div>
 
           <div className="modal-info">
             <h2>{book.title}</h2>
+
             <p>
               <strong>Author:</strong> {book.author}
             </p>
@@ -92,25 +97,28 @@ export default function BookDetailModal({ book, onClose, onSendRequest }) {
             <p>
               <strong>Condition:</strong> {book.condition}
             </p>
+
             <p>
               <strong>Availability:</strong>{" "}
               <span className={availabilityClass}>{availabilityText}</span>
             </p>
+
             <p>
               <strong>Owner:</strong> {book.owner?.username}
             </p>
+
             <p>
               <strong>Distance:</strong>{" "}
               {book.distance === Infinity
                 ? "Unknown"
-                : `${book.distance.toFixed(2)} km`}
+                : `${book.distance?.toFixed(2)} km`}
             </p>
+
             <p className="modal-description">
               <strong>Description:</strong>{" "}
               {book.description || "No description available."}
             </p>
 
-            {/* Small buttons side-by-side */}
             <div className="modal-actions">
               <button
                 className="request-btn-small"
@@ -119,6 +127,7 @@ export default function BookDetailModal({ book, onClose, onSendRequest }) {
               >
                 {isAvailable ? "Send Request" : "Not Available"}
               </button>
+
               <button className="close-btn-small" onClick={onClose}>
                 Close
               </button>

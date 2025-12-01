@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "../../static/home/HeroCarousel.css";
+
+// Constants
+const SLIDE_INTERVAL = 4000;
 
 const textSlides = [
   {
@@ -23,36 +26,58 @@ const textSlides = [
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % textSlides.length);
-    }, 4000); // 4 seconds
-
-    return () => clearInterval(interval);
+  // Move to next slide
+  const nextSlide = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % textSlides.length);
   }, []);
+
+  // Auto slide interval
+  useEffect(() => {
+    const interval = setInterval(nextSlide, SLIDE_INTERVAL);
+    return () => clearInterval(interval); // Cleanup
+  }, [nextSlide]);
 
   return (
     <div className="text-carousel-container">
-      {textSlides.map((slide, index) => (
-        <div
-          key={index}
-          className={`text-slide ${index === current ? "active" : ""}`}
-        >
-          <h1 className="carousel-title">{slide.title}</h1>
-          <p className="carousel-subtitle">{slide.subtitle}</p>
-        </div>
-      ))}
+      {/* Slides */}
+      {textSlides.map((slide, index) => {
+        const isActive = index === current;
+        return (
+          <div key={index} className={`text-slide ${isActive ? "active" : ""}`}>
+            <h1 className="carousel-title">{slide.title}</h1>
+            <p className="carousel-subtitle">{slide.subtitle}</p>
+          </div>
+        );
+      })}
 
       {/* Dots Indicator */}
       <div className="carousel-dots">
-        {textSlides.map((_, index) => (
-          <button
-            key={index}
-            className={`dot ${index === current ? "active" : ""}`}
-            onClick={() => setCurrent(index)}
-          />
-        ))}
+        {textSlides.map((_, index) => {
+          const isActive = index === current;
+          return (
+            <button
+              key={index}
+              className={`dot ${isActive ? "active" : ""}`}
+              onClick={() => setCurrent(index)}
+            />
+          );
+        })}
       </div>
     </div>
   );
 }
+
+// 1. Magic Number Removed
+// 4000 updated to SLIDE_INTERVAL
+
+// 2. Unstable interval callback
+// Converted auto-slide handler into useCallback
+
+// 3. Better readability
+// Cleaned mapping & className checks
+
+// 4. Reduced inline logic
+// Separated isActive for cleaner JSX
+
+// 5. Component prepared for future upgrades
+// (e.g., fade animations, swipe gestures, framer-motion)
