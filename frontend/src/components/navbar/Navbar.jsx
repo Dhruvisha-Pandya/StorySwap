@@ -12,24 +12,32 @@ export default function Navbar() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [profilePic, setProfilePic] = useState("");
   const [theme, toggleTheme] = useTheme();
+
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Load user's profile pic
+  // -----------------------------
+  // Fetch user's profile pic
+  // -----------------------------
   useEffect(() => {
     const fetchProfilePic = async () => {
       const user = auth.currentUser;
-      if (user) {
+      if (!user) return;
+
+      try {
         const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists() && userDoc.data().profilePic) {
-          setProfilePic(userDoc.data().profilePic);
-        }
+        const data = userDoc.data();
+        if (userDoc.exists() && data.profilePic) setProfilePic(data.profilePic);
+      } catch (err) {
+        console.error("Error fetching profile pic:", err);
       }
     };
     fetchProfilePic();
   }, []);
 
+  // -----------------------------
   // Close dropdown when clicked outside
+  // -----------------------------
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -40,6 +48,9 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // -----------------------------
+  // Handlers
+  // -----------------------------
   const handleLogout = async () => {
     await auth.signOut();
     navigate("/login");
@@ -52,15 +63,57 @@ export default function Navbar() {
     navigate("/signup");
   };
 
+  // -----------------------------
+  // JSX Components
+  // -----------------------------
+  const renderDropdownMenu = () => (
+    <div className="dropdown-menu">
+      <button
+        onClick={() => {
+          setShowProfileModal(true);
+          setIsDropdownOpen(false);
+        }}
+      >
+        Profile / Settings
+      </button>
+      <button onClick={handleLogout}>Logout</button>
+      <button className="delete-btn" onClick={() => setShowDeleteModal(true)}>
+        Delete Account
+      </button>
+    </div>
+  );
+
+  const renderDeleteModal = () => (
+    <div className="modal-overlay">
+      <div className="modal-box">
+        <h3 className="danger-text">⚠️ Delete Account</h3>
+        <p>
+          This action cannot be undone. Are you sure you want to permanently
+          delete your account?
+        </p>
+        <div className="modal-actions">
+          <button
+            className="cancel-btn"
+            onClick={() => setShowDeleteModal(false)}
+          >
+            Cancel
+          </button>
+          <button className="confirm-delete" onClick={confirmDelete}>
+            Yes, Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <nav className="storyswap-nav">
       <Link to="/" className="logo">
-  <img src="/Logo.png" alt="StorySwap Logo" className="logo-image" />
-  <span>StorySwap</span>
-</Link>
+        <img src="/Logo.png" alt="StorySwap Logo" className="logo-image" />
+        <span>StorySwap</span>
+      </Link>
 
       <div className="nav-right">
-        {/* Theme Toggle Button */}
         <button
           type="button"
           className="theme-toggle-btn"
@@ -75,7 +128,6 @@ export default function Navbar() {
           <span className="text">My Books</span>
         </Link>
 
-        {/* Profile Dropdown */}
         <div className="profile-dropdown" ref={dropdownRef}>
           <button
             className="profile-icon-btn"
@@ -89,53 +141,12 @@ export default function Navbar() {
             )}
           </button>
 
-          {isDropdownOpen && (
-            <div className="dropdown-menu">
-              <button
-                onClick={() => {
-                  setShowProfileModal(true);
-                  setIsDropdownOpen(false);
-                }}
-              >
-                Profile / Settings
-              </button>
-              <button onClick={handleLogout}>Logout</button>
-              <button
-                className="delete-btn"
-                onClick={() => setShowDeleteModal(true)}
-              >
-                Delete Account
-              </button>
-            </div>
-          )}
+          {isDropdownOpen && renderDropdownMenu()}
         </div>
       </div>
 
-      {/* Delete Modal */}
-      {showDeleteModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <h3 className="danger-text">⚠️ Delete Account</h3>
-            <p>
-              This action cannot be undone. Are you sure you want to permanently
-              delete your account?
-            </p>
-            <div className="modal-actions">
-              <button
-                className="cancel-btn"
-                onClick={() => setShowDeleteModal(false)}
-              >
-                Cancel
-              </button>
-              <button className="confirm-delete" onClick={confirmDelete}>
-                Yes, Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {showDeleteModal && renderDeleteModal()}
 
-      {/* Profile Modal */}
       {showProfileModal && (
         <ProfileModal
           onClose={() => setShowProfileModal(false)}
