@@ -11,8 +11,8 @@ def test_email():
 
     success = send_email(
         to_email=test_to,
-        subject="🚀 StorySwap Email Test (SendGrid)",
-        html_body="<h1>🎉 SendGrid Test Successful!</h1><p>Your backend is sending emails.</p>"
+        subject="StorySwap Email Test (SendGrid)",
+        html_body="<h1>SendGrid Test Successful!</h1><p>Your backend is sending emails.</p>"
     )
 
     return jsonify({

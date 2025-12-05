@@ -1,9 +1,14 @@
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from config import Config
+
 from routes.books import books_bp
 from routes.email import email_bp
 from routes.debug import debug_bp
+from routes.auth import auth_bp
+
+from firebase_config import db  # initializes Firebase
+
 
 app = Flask(__name__)
 CORS(app)
@@ -13,6 +18,7 @@ app.config['SECRET_KEY'] = Config.SECRET_KEY
 app.register_blueprint(books_bp, url_prefix='/api')
 app.register_blueprint(email_bp, url_prefix='/api')
 app.register_blueprint(debug_bp, url_prefix='/api')
+app.register_blueprint(auth_bp, url_prefix='/api')
 
 # Serve React build
 @app.route('/', defaults={'path': ''})

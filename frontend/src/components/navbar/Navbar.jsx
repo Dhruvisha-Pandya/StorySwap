@@ -16,9 +16,7 @@ export default function Navbar() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // -----------------------------
   // Fetch user's profile pic
-  // -----------------------------
   useEffect(() => {
     const fetchProfilePic = async () => {
       const user = auth.currentUser;
@@ -35,9 +33,7 @@ export default function Navbar() {
     fetchProfilePic();
   }, []);
 
-  // -----------------------------
   // Close dropdown when clicked outside
-  // -----------------------------
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -48,9 +44,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // -----------------------------
   // Handlers
-  // -----------------------------
   const handleLogout = async () => {
     await auth.signOut();
     navigate("/login");
@@ -63,9 +57,7 @@ export default function Navbar() {
     navigate("/signup");
   };
 
-  // -----------------------------
   // JSX Components
-  // -----------------------------
   const renderDropdownMenu = () => (
     <div className="dropdown-menu">
       <button

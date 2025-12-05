@@ -25,7 +25,7 @@ export default function BookModal({
   const [preview, setPreview] = useState(book.coverBase64 || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /* ---------------- IMAGE HANDLING ---------------- */
+  /*  IMAGE HANDLING  */
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -37,7 +37,7 @@ export default function BookModal({
     reader.readAsDataURL(file);
   };
 
-  /* ---------------- SAVE HANDLING ---------------- */
+  /*  SAVE HANDLING  */
   const handleSave = async (e) => {
     e.preventDefault();
     if (!title.trim() || !author.trim()) {
@@ -67,7 +67,7 @@ export default function BookModal({
     }
   };
 
-  /* ---------------- DELETE HANDLING ---------------- */
+  /*  DELETE HANDLING  */
   const handleDelete = async () => {
     if (!window.confirm("Delete this book? This cannot be undone.")) return;
 
@@ -313,6 +313,6 @@ export default function BookModal({
     </div>
   );
 
-  /* ---------------- RETURN ---------------- */
+  /*  RETURN  */
   return editing ? renderEditMode() : renderViewMode();
 }

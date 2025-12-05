@@ -14,10 +14,10 @@ export default function useAutoUpdateLocation() {
           await updateDoc(doc(db, "users", auth.currentUser.uid), {
             location: { latitude, longitude },
           });
-          console.log("📍 Auto location updated:", latitude, longitude);
+          console.log("Auto location updated:", latitude, longitude);
         },
         (error) => {
-          console.warn("⚠️ Location update failed:", error.message);
+          console.warn("Location update failed:", error.message);
         }
       );
     };
