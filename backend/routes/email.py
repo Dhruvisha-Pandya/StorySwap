@@ -1,3 +1,4 @@
+# email.py
 from flask import Blueprint, request, jsonify
 from services.email_service import send_email
 from config import Config
@@ -72,7 +73,7 @@ def respond_request():
         if not all([action, borrower_email, book_title, lender_name]):
             return "Missing parameters", 400
 
-        status = "accepted" if action == "accept" else "declined"
+        status_display = "✔️ ACCEPTED" if action == "accept" else "❌ DECLINED"
 
         email_body = f"""
         <html>
@@ -82,7 +83,7 @@ def respond_request():
             <p>Your request to borrow the following book has been reviewed:</p>
 
             <p><strong>Book Title:</strong> "{book_title}"<br>
-               <strong>Status:</strong> {status.title()}<br>
+               <strong>Status:</strong> {status_display}<br>
                <strong>Responded By:</strong> {lender_name}</p>
 
             <p>If you have any further questions, feel free to contact the lender directly.</p>
@@ -92,7 +93,7 @@ def respond_request():
 
         send_email(
             to_email=borrower_email,
-            subject=f"Your Book Request Has Been {status.title()}",
+            subject=f"Your Book Request Has Been {status_display}",
             html_body=email_body
         )
 
